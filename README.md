@@ -1,3 +1,5 @@
+# DEVELOPED BY : SHALINI K
+# REGISTER NUMBER : 212222240095
 # Ex.No: 03   COMPUTE THE AUTO FUNCTION(ACF)
 Date: 
 
@@ -11,33 +13,44 @@ type to fit the data.
 4. Store the results in an array
 5. Represent the result in graphical representation as given below.
 ### PROGRAM:
+```py
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
-import numpy as np
+# Load the dataset
+file_path = 'coin_Bitcoin.csv'
+data = pd.read_csv(file_path)
 
-data = [3, 16, 156, 47, 246, 176, 233, 140, 130,
-101, 166, 201, 200, 116, 118, 247,
-209, 52, 153, 232, 128, 27, 192, 168, 208,
-187, 228, 86, 30, 151, 18, 254,
-76, 112, 67, 244, 179, 150, 89, 49, 83, 147, 90,
-33, 6, 158, 80, 35, 186, 127]
+# Extract the 'Close' column
+close_prices = data['Close'].dropna()
 
-lags = range(35)
+# Mean
+data_mean = np.mean(close_prices)
 
+# Variance
+data_var = np.var(close_prices)
 
-#Pre-allocate autocorrelation table
+# Normalized data
+normalized_data = (close_prices - data_mean) / np.sqrt(data_var)
 
-#Mean
+# Compute the autocorrelation function (ACF)
+acf_result = np.correlate(normalized_data, normalized_data, mode='full')
 
-#Variance
+# Take only the positive lags
+acf_result = acf_result[len(acf_result)//2:]
 
-#Normalized data
+# Plot the ACF
+plt.figure(figsize=(10, 5))
+plt.stem(acf_result[:36])  # Removed use_line_collection
+plt.xlabel('Lag')
+plt.ylabel('Autocorrelation')
+plt.title('Autocorrelation Function (ACF) for Bitcoin Close Prices')
+plt.show()
 
-#Go through lag components one-by-one
-
-#display the graph
-
+```
 ### OUTPUT:
+![image](https://github.com/user-attachments/assets/c3986cdb-9fff-4b76-8ef0-a85feb38f7ea)
 
 ### RESULT:
         Thus we have successfully implemented the auto correlation function in python.
